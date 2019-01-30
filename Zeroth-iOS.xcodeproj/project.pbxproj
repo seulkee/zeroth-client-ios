@@ -13,6 +13,11 @@
 		0778B3FC220206CF00FA9972 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0778B3FB220206CF00FA9972 /* Assets.xcassets */; };
 		0778B3FF220206CF00FA9972 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0778B3FD220206CF00FA9972 /* LaunchScreen.storyboard */; };
 		0778B402220206CF00FA9972 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0778B401220206CF00FA9972 /* main.m */; };
+		0778B4182202105E00FA9972 /* AudioEngineHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0778B40E2202105E00FA9972 /* AudioEngineHandler.m */; };
+		0778B4192202105E00FA9972 /* AudioQueueHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0778B4102202105E00FA9972 /* AudioQueueHandler.m */; };
+		0778B41A2202105E00FA9972 /* ZerothSpeechToText.m in Sources */ = {isa = PBXBuildFile; fileRef = 0778B4122202105E00FA9972 /* ZerothSpeechToText.m */; };
+		0778B41B2202105E00FA9972 /* JFRSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0778B4152202105E00FA9972 /* JFRSecurity.m */; };
+		0778B41C2202105E00FA9972 /* JFRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0778B4172202105E00FA9972 /* JFRWebSocket.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +31,16 @@
 		0778B3FE220206CF00FA9972 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0778B400220206CF00FA9972 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0778B401220206CF00FA9972 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0778B40D2202105E00FA9972 /* AudioEngineHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEngineHandler.h; sourceTree = "<group>"; };
+		0778B40E2202105E00FA9972 /* AudioEngineHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioEngineHandler.m; sourceTree = "<group>"; };
+		0778B40F2202105E00FA9972 /* AudioQueueHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioQueueHandler.h; sourceTree = "<group>"; };
+		0778B4102202105E00FA9972 /* AudioQueueHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioQueueHandler.m; sourceTree = "<group>"; };
+		0778B4112202105E00FA9972 /* ZerothSpeechToText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZerothSpeechToText.h; sourceTree = "<group>"; };
+		0778B4122202105E00FA9972 /* ZerothSpeechToText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZerothSpeechToText.m; sourceTree = "<group>"; };
+		0778B4142202105E00FA9972 /* JFRSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFRSecurity.h; sourceTree = "<group>"; };
+		0778B4152202105E00FA9972 /* JFRSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFRSecurity.m; sourceTree = "<group>"; };
+		0778B4162202105E00FA9972 /* JFRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFRWebSocket.h; sourceTree = "<group>"; };
+		0778B4172202105E00FA9972 /* JFRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFRWebSocket.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +77,8 @@
 				0778B3F3220206CF00FA9972 /* AppDelegate.m */,
 				0778B3F5220206CF00FA9972 /* ViewController.h */,
 				0778B3F6220206CF00FA9972 /* ViewController.m */,
+				0778B4132202105E00FA9972 /* Jetfire - websocket */,
+				0778B40C2202105E00FA9972 /* Zeroth - STT library */,
 				0778B3F8220206CF00FA9972 /* Main.storyboard */,
 				0778B3FB220206CF00FA9972 /* Assets.xcassets */,
 				0778B3FD220206CF00FA9972 /* LaunchScreen.storyboard */,
@@ -69,6 +86,30 @@
 				0778B401220206CF00FA9972 /* main.m */,
 			);
 			path = "Zeroth-iOS";
+			sourceTree = "<group>";
+		};
+		0778B40C2202105E00FA9972 /* Zeroth - STT library */ = {
+			isa = PBXGroup;
+			children = (
+				0778B40D2202105E00FA9972 /* AudioEngineHandler.h */,
+				0778B40E2202105E00FA9972 /* AudioEngineHandler.m */,
+				0778B40F2202105E00FA9972 /* AudioQueueHandler.h */,
+				0778B4102202105E00FA9972 /* AudioQueueHandler.m */,
+				0778B4112202105E00FA9972 /* ZerothSpeechToText.h */,
+				0778B4122202105E00FA9972 /* ZerothSpeechToText.m */,
+			);
+			path = "Zeroth - STT library";
+			sourceTree = "<group>";
+		};
+		0778B4132202105E00FA9972 /* Jetfire - websocket */ = {
+			isa = PBXGroup;
+			children = (
+				0778B4142202105E00FA9972 /* JFRSecurity.h */,
+				0778B4152202105E00FA9972 /* JFRSecurity.m */,
+				0778B4162202105E00FA9972 /* JFRWebSocket.h */,
+				0778B4172202105E00FA9972 /* JFRWebSocket.m */,
+			);
+			path = "Jetfire - websocket";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,8 +183,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0778B3F7220206CF00FA9972 /* ViewController.m in Sources */,
+				0778B4182202105E00FA9972 /* AudioEngineHandler.m in Sources */,
+				0778B41C2202105E00FA9972 /* JFRWebSocket.m in Sources */,
+				0778B4192202105E00FA9972 /* AudioQueueHandler.m in Sources */,
 				0778B402220206CF00FA9972 /* main.m in Sources */,
 				0778B3F4220206CF00FA9972 /* AppDelegate.m in Sources */,
+				0778B41B2202105E00FA9972 /* JFRSecurity.m in Sources */,
+				0778B41A2202105E00FA9972 /* ZerothSpeechToText.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
