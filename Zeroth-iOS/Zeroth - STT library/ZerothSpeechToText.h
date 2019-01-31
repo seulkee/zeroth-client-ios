@@ -8,6 +8,17 @@
  
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, ZSampleRate) {
+    z44100,
+    z16000,
+    z11200,
+};
+
+typedef NS_ENUM(NSInteger, zLanguage) {
+    zKorean,
+    zEnglish,
+};
+
 @protocol ZerothSTTDelegate <NSObject>
 @optional
 -(void)zerothSocketDidConnect;
@@ -21,7 +32,6 @@
 
 @property (readonly, nonatomic, getter=isListening) BOOL listening;
 @property (readonly, nonatomic, getter=isConnected) BOOL connected;
-@property (atomic) double sampleRate;
 
 @property (nonatomic, weak) id<ZerothSTTDelegate> delegate;
 
@@ -38,16 +48,16 @@
 //    language: string // Required. You can choose 'eng' for English or 'kor' for Korean
 // }
 
-- (void)authenticationRequestAppID:(NSString *)appID
-                         AppSecret:(NSString *)appSecret
-                          Language:(NSString *)language
-                         FinalOnly:(BOOL)isFinalOnly;
+- (void)setupSampleRate:(ZSampleRate)sampleRate;
+- (void)setupAuthenticationAppID:(NSString *)appID
+                       AppSecret:(NSString *)appSecret
+                        Language:(zLanguage)language
+                       FinalOnly:(BOOL)isFinalOnly;
+- (void)connectZerothSocket;
+- (void)disconnectZerothSocket;
+- (void)startZerothSTT;
+- (void)stopZerothSTT;
 
-- (void)zerothSTTStart;
-- (void)zerothSTTEnd;
-
-- (void)zerothSocketDisconnect;
-- (void)zerothSocketReconnect;
 
 @end
 

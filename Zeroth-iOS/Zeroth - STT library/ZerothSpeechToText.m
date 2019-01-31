@@ -30,6 +30,7 @@
 @property(nonatomic, strong)NSString *appSecret;
 @property(nonatomic, strong)NSString *language;
 @property(nonatomic, strong)NSString *finalOnly;
+@property(atomic) double sampleRate;
 
 @end
 
@@ -38,6 +39,7 @@
 - (instancetype)init {
     if(self = [super init]) {
         
+        // Set default values
 #if USE_AUDIOENGINE
         self.sampleRate = 11025;
         self.audioEngineHandler = [[AudioEngineHandler alloc] init];
@@ -47,31 +49,88 @@
         self.audioQueueHandler = [[AudioQueueHandler alloc] init];
         self.audioQueueHandler.delegate = self;
 #endif
+        self.finalOnly = @"false";
     }
     
     return self;
 }
 
-- (void)authenticationRequestAppID:(NSString *)appID
-                         AppSecret:(NSString *)appSecret
-                          Language:(NSString *)language
-                         FinalOnly:(BOOL)isFinalOnly {
+- (void)setupLanguage:(zLanguage)language {
     
-    [self authenticationRequest:appID withAppSecret:appSecret];
-    self.language = language;
-    self.finalOnly = isFinalOnly ? @"true" : @"false";
+    NSString *authLang = @"kor"; //default language option for authentication
     
-    [self authenticationRequest:nil];
+    switch (language) {
+        case zKorean:
+            authLang = @"kor";
+            break;
+            
+        case zEnglish:
+            authLang = @"eng";
+            break;
+            
+        default:
+            break;
+    }
+    
+    self.language = authLang;
 }
 
-- (void)authenticationRequest:(NSString *)appID
+- (void)setupSampleRate:(ZSampleRate)sampleRate {
+    
+    double selectedSampleRate = 16000.0;
+    switch (sampleRate) {
+        case z11200:
+            selectedSampleRate = 11200.0;
+            break;
+            
+        case z16000:
+            selectedSampleRate = 16000.0;
+            break;
+            
+        case z44100:
+            selectedSampleRate = 44100.0;
+            break;
+            
+        default:
+            selectedSampleRate = 16000.0;
+            break;
+    }
+    
+    self.sampleRate = selectedSampleRate;
+    
+    NSLog(@"change sample rate - %.1f", self.sampleRate);
+}
+
+- (void)setupAuthenticationAppID:(NSString *)appID
+                       AppSecret:(NSString *)appSecret
+                        Language:(zLanguage)language
+                       FinalOnly:(BOOL)isFinalOnly {
+    
+    [self requestAuthentication:appID withAppSecret:appSecret];
+    [self setupLanguage:language];
+    self.finalOnly = isFinalOnly ? @"true" : @"false";
+}
+
+- (void)requestAuthentication:(NSString *)appID
                 withAppSecret:(NSString *)appSecret {
     
     self.appID = appID;
     self.appSecret = appSecret;
 }
 
-- (void)authenticationRequest:(id)sender {
+- (void)requestAuthenticationAppID:(NSString *)appID
+                         AppSecret:(NSString *)appSecret
+                          Language:(zLanguage)language
+                         FinalOnly:(BOOL)isFinalOnly {
+    
+    [self setupAuthenticationAppID:appID
+                         AppSecret:appSecret
+                          Language:language
+                         FinalOnly:isFinalOnly];
+    [self requestAuthentication:nil];
+}
+
+- (void)requestAuthentication:(id)sender {
     
     NSString *authorizationStr = [NSString stringWithFormat:@"%@:%@", self.appID, self.appSecret];
     /* Configure session, choose between:
@@ -125,10 +184,9 @@
     [session finishTasksAndInvalidate];
 }
 
-
 - (void)connectSocket {
     
-    // Open a WebSocket connection
+    // Open webSocket connection
     // wss://zeroth.goodatlas.com:2087/client/ws/speech?access-token=<access-token>&language=<language>
     
     /* Available sample rates - minimum requirements
@@ -148,29 +206,6 @@
 }
 
 #pragma mark -
-
-//- (void)accessSoundFileInNSData {
-//
-////    NSString *path = [pathURL filePath];
-////    if([[NSFileManager defaultManager] fileExistsAtPath:path)
-////    {
-////        NSData *data = [[NSFileManager defaultManager] contentsAtPath:path];
-////    }
-////        else
-////    {
-////        NSLog(@"File not exits");
-////    }
-//    NSURL *imgPath = [[NSBundle mainBundle] URLForResource:@"sample" withExtension:@"mp3"];
-//    NSString *stringPath = [imgPath absoluteString]; //this is correct
-//    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:stringPath]];
-//
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *documentsDirectory = [paths objectAtIndex:0];
-//    NSArray *tableArray = [self listFileAtPath:documentsDirectory];
-//
-//    NSLog(@"%@ - %@", tableArray, stringPath);
-//}
-
 
 -(NSArray *)listFileAtPath:(NSString *)path {
     
@@ -206,7 +241,6 @@
 
 -(void)websocketDidDisconnect:(JFRWebSocket*)socket error:(NSError*)error {
     //NSLog(@"websocket is disconnected: %@", [error localizedDescription]);
-    //        [self.socket connect];
     [self.delegate zerothSocketDidDisconnectWithError:error];
 }
 
@@ -242,18 +276,16 @@
     return self.socket.isConnected;
 }
 
-- (void)zerothSTTStart {
+- (void)startZerothSTT {
     NSLog(@"microphone on");
 #if USE_AUDIOENGINE
     [self.audioEngineHandler startListeningAtSampleRate:self.sampleRate];
 #else
     [self.audioQueueHandler startListeningAtSampleRate:self.sampleRate];
 #endif
-    
-    
 }
 
-- (void)zerothSTTEnd {
+- (void)stopZerothSTT {
     NSLog(@"microphone off");
 #if USE_AUDIOENGINE
     [self.audioEngineHandler stopListening];
@@ -269,15 +301,15 @@
         [self.socket disconnect];
     } else {
         NSLog(@"socket will be connected");
-        [self authenticationRequest:nil];
+        [self requestAuthentication:nil];
     }
 }
 
-- (void)zerothSocketDisconnect {
+- (void)disconnectZerothSocket {
     [self.socket disconnect];
 }
 
-- (void)zerothSocketReconnect {
+- (void)connectZerothSocket {
     
     if (!_appID || !_appSecret || !_language) {
         
@@ -292,7 +324,7 @@
         }
     }
     else {
-        [self authenticationRequest:nil];
+        [self requestAuthentication:nil];
     }
 }
 
