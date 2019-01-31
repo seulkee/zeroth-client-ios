@@ -19,7 +19,7 @@
 @property (strong, nonatomic) NSString *partialStr;
 @property (strong, nonatomic) NSString *fullHistoryStr;
 
-@property (strong, nonatomic) ZerothSpeechToText *zerothSTT;
+@property (strong, nonatomic) ZerothSpeechToText *zeroth;
 @end
 
 @implementation ViewController
@@ -27,14 +27,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.zerothSTT = [ZerothSpeechToText new];
-    self.zerothSTT.delegate = self;
-    
-    //zeroth authentication
-    [self.zerothSTT authenticationRequestAppID:APP_ID
-                                     AppSecret:APP_SECRET
-                                      Language:@"kor" //"eng" or "kor"
-                                     FinalOnly:NO];
+    self.zeroth = [ZerothSpeechToText new];
+    self.zeroth.delegate = self;
+
+    // setup authentication
+    [self.zeroth setupAuthenticationAppID:@"ENTER_YOUR_APP_ID"
+                                AppSecret:@"ENTER_YOUR_APP_SECRET"
+                                 Language:zKorean //"zKorea" or "zEnglish"
+                                FinalOnly:NO];
+    // connect to zeroth STT server 
+    [self.zeroth connectZerothSocket];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -94,7 +96,7 @@
 #pragma mark - ZerothSTTDelegate methods
 
 - (void)zerothSocketDidConnect {
-    NSLog(@"socket is connected");
+    NSLog(@"zeroth socket is connected");
     self.toggleConnectionStatus.title = @"Disconnect";
     
     [self resetTextView];
@@ -104,7 +106,7 @@
 }
 
 - (void)zerothSocketDidDisconnectWithError:(NSError*)error {
-    NSLog(@"socket is disconnected: %@", [error localizedDescription]);
+    NSLog(@"zeroth socket is disconnected: %@", [error localizedDescription]);
     self.toggleConnectionStatus.title = @"Connect";
     
     //make sure all connection and microphone off
@@ -115,26 +117,26 @@
 }
 
 - (void)zerothSocketDidReceiveMessage:(NSString*)string {
-    NSLog(@"Received text: %@", string);
+    NSLog(@"result: %@", string);
 
     [self updateTextView:string];
 }
 
 -(void)zerothSocketDidReceiveData:(NSData*)data {
-    NSLog(@"Received data: %@", data);
+    NSLog(@"got some binary data: %lu",(unsigned long)data.length);
 }
 
 - (void)resetAllSetting {
     
     //reset listening - turn off microphone
-    if ([_zerothSTT isListening]) {
-        [_zerothSTT zerothSTTEnd];
+    if ([_zeroth isListening]) {
+        [_zeroth stopZerothSTT];
         self.toggleStartEndSTT.title = @"Start";
     }
     
     //reset websocket
-    if(_zerothSTT.isConnected) {
-        [_zerothSTT zerothSocketDisconnect];
+    if(_zeroth.isConnected) {
+        [_zeroth disconnectZerothSocket];
         self.toggleConnectionStatus.title = @"Connect";
     }
 }
@@ -142,22 +144,22 @@
 #pragma mark - IB target actions
 - (IBAction)toggleStartSTT:(UIBarButtonItem *)sender {
     
-    if ([_zerothSTT isListening]) {
-        [_zerothSTT zerothSTTEnd];
+    if ([_zeroth isListening]) {
+        [_zeroth stopZerothSTT];
         sender.title = @"Start";
     } else {
-        [_zerothSTT zerothSTTStart];
+        [_zeroth startZerothSTT];
         sender.title = @"End";
     }
 }
 
 - (IBAction)toggleSocketConnect:(UIBarButtonItem *)sender {
     
-    if(_zerothSTT.isConnected) {
-        [_zerothSTT zerothSocketDisconnect];
+    if(_zeroth.isConnected) {
+        [_zeroth disconnectZerothSocket];
         sender.title = @"Connect";
     } else {
-        [_zerothSTT zerothSocketReconnect];
+        [_zeroth connectZerothSocket];
         sender.title = @"Disconnect";
     }
 }
@@ -165,13 +167,11 @@
 - (IBAction)changeSampleRates:(id)sender {
     
     if(_sampleRateSegControl.selectedSegmentIndex == 0) {
-        _zerothSTT.sampleRate = 44100;
+        [_zeroth setupSampleRate:z44100];
     }
     else if (_sampleRateSegControl.selectedSegmentIndex == 1) {
-        _zerothSTT.sampleRate = 16000;
+        [_zeroth setupSampleRate:z16000];
     }
-    
-    NSLog(@"change sample rate - %.1f", _zerothSTT.sampleRate);
 }
 
 - (void)disableSampleRateSegControl {
