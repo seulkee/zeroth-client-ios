@@ -11,6 +11,7 @@
 @interface AudioQueueHandler()
 
 @property (nonatomic, assign) HandlerState handlerState;
+@property (atomic) UInt32 bufferByteSize;
 
 @end
 
@@ -51,6 +52,7 @@
     
     // figure out the buffer size - send data in 250 ms
     DeriveBufferSize(_handlerState.queue, _handlerState.dataFormat, 0.25, &_handlerState.bufferByteSize);
+    _bufferByteSize = _handlerState.bufferByteSize;
     
     // allocate those buffers and enqueue them
     for(int i = 0; i < NUM_BUFFERS; i++) {
@@ -117,7 +119,7 @@ static void HandleInputBuffer (void *aqData, AudioQueueRef inAQ, AudioQueueBuffe
     AudioQueueHandler *audioQueueHandler = (__bridge AudioQueueHandler *)(aqData);
     
     // convert buffer to byte
-    NSData *bufferData = [[NSData alloc] initWithBytes:inBuffer->mAudioData length:inBuffer->mAudioDataByteSize];
+    NSData *bufferData = [[NSData alloc] initWithBytes:inBuffer->mAudioData length:audioQueueHandler.bufferByteSize];
     
     // NOTE : bitrate = bitsPerSample * samplesPerSecond * channels
     //       for 16.0K
