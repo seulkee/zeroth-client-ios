@@ -31,6 +31,7 @@
 @property(nonatomic, strong)NSString *language;
 @property(nonatomic, strong)NSString *finalOnly;
 @property(atomic) double sampleRate;
+@property(atomic) double bufferSizeInSec;
 
 @end
 
@@ -46,6 +47,7 @@
         self.audioEngineHandler.delegate = self;
 #else
         self.sampleRate = 16000;
+        self.bufferSizeInSec = 0.25;
         self.audioQueueHandler = [[AudioQueueHandler alloc] init];
         self.audioQueueHandler.delegate = self;
 #endif
@@ -73,6 +75,10 @@
     }
     
     self.language = authLang;
+}
+
+- (void)setupBufferSizeInSecond:(double)bufferSizeInSec {
+    self.bufferSizeInSec = bufferSizeInSec;
 }
 
 - (void)setupSampleRate:(ZSampleRate)sampleRate {
@@ -285,7 +291,9 @@
 #if USE_AUDIOENGINE
     [self.audioEngineHandler startListeningAtSampleRate:self.sampleRate];
 #else
-    [self.audioQueueHandler startListeningAtSampleRate:self.sampleRate];
+    self.audioQueueHandler.sampleRate = self.sampleRate;
+    self.audioQueueHandler.bufferSizeInSec = self.bufferSizeInSec;
+    [self.audioQueueHandler startListening];
 #endif
 }
 

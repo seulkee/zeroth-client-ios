@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, zLanguage) {
 // }
 
 - (void)setupSampleRate:(ZSampleRate)sampleRate;
+- (void)setupBufferSizeInSecond:(double)bufferSizeInSec;
 - (void)setupAuthenticationAppID:(NSString *)appID
                        AppSecret:(NSString *)appSecret
                         Language:(zLanguage)language
