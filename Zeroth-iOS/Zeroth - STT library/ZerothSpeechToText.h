@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, ZSampleRate) {
+    z8000,
     z44100,
     z16000,
     z11200,

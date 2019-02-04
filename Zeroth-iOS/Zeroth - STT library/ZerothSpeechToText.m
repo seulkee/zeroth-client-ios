@@ -79,6 +79,10 @@
     
     double selectedSampleRate = 16000.0;
     switch (sampleRate) {
+        case z8000:
+            selectedSampleRate = 8000.0;
+            break;
+            
         case z11200:
             selectedSampleRate = 11200.0;
             break;
