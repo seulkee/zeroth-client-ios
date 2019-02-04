@@ -35,6 +35,7 @@ typedef struct HandlerState {
 @property (nonatomic, weak) id<AudioQueueHandlerDelegate> delegate;
 @property (nonatomic, readonly) BOOL isListening;
 @property (atomic) double sampleRate;
+@property (atomic) double bufferSizeInSec;
 
 - (BOOL)startListening;
 - (BOOL)startListeningAtSampleRate:(float)sampleRate;

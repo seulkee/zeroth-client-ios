@@ -24,6 +24,9 @@
         if (!self.sampleRate) {
             self.sampleRate = 16000;
         }
+        if (!self.bufferSizeInSec) {
+            self.bufferSizeInSec = 0.25; // default buffer chunk in second is 250 ms 
+        }
         
     }
     return self;
@@ -50,8 +53,8 @@
     OSStatus status;
     status = AudioQueueNewInput(&_handlerState.dataFormat, HandleInputBuffer, (__bridge void*)self, CFRunLoopGetCurrent(),kCFRunLoopCommonModes, 0, &_handlerState.queue);
     
-    // figure out the buffer size - send data in 250 ms
-    DeriveBufferSize(_handlerState.queue, _handlerState.dataFormat, 0.25, &_handlerState.bufferByteSize);
+    // figure out the buffer size 
+    DeriveBufferSize(_handlerState.queue, _handlerState.dataFormat, _bufferSizeInSec, &_handlerState.bufferByteSize);
     _bufferByteSize = _handlerState.bufferByteSize;
     
     // allocate those buffers and enqueue them
