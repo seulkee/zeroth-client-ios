@@ -318,13 +318,13 @@
     if (!_appID || !_appSecret || !_language) {
         
         if (!_appID) {
-            NSLog(@"unable to reconnect - check appID");
+            NSLog(@"unable to connect - check appID");
         } else if (!_appSecret) {
-            NSLog(@"unable to reconnect - check appSecret");
+            NSLog(@"unable to connect - check appSecret");
         } else if (!_language) {
-            NSLog(@"unable to reconnect - check language");
+            NSLog(@"unable to connect - check language");
         } else {
-            NSLog(@"unable to reconnect");
+            NSLog(@"unable to connect");
         }
     }
     else {
