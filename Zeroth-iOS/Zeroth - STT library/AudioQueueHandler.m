@@ -21,7 +21,7 @@
     if (self = [super init]) {
         _handlerState.listening = NO;
         if (!self.sampleRate) {
-            self.sampleRate = 44100;
+            self.sampleRate = 16000;
         }
         
     }
@@ -91,12 +91,6 @@
 // Stop the listening after waiting just a second
 - (void)stopListening {
     [self performSelector:@selector(reallyStopListening) withObject:NULL afterDelay:1.0f];
-}
-
-- (void)reallyPauseListening {
-	if (!_handlerState.queue) {fprintf(stderr, "Nothing to pause\n"); return;}
-    OSStatus status = AudioQueuePause(_handlerState.queue);
-    if (status) {fprintf(stderr, "Error pausing audio queue\n"); return;}
 }
 
 // Return whether the listening is active
