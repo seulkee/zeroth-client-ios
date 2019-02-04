@@ -30,12 +30,18 @@
     self.zeroth = [ZerothSpeechToText new];
     self.zeroth.delegate = self;
 
+    // setup sample rate (optional) - default 16 KHz
+    [self.zeroth setupSampleRate:z16000];
+    
+    // setup buffer size in second (optional) - default 250 ms
+    [self.zeroth setupBufferSizeInSecond:0.25];
+    
     // setup authentication
     [self.zeroth setupAuthenticationAppID:@"ENTER_YOUR_APP_ID"
                                 AppSecret:@"ENTER_YOUR_APP_SECRET"
                                  Language:zKorean //"zKorea" or "zEnglish"
                                 FinalOnly:NO];
-    // connect to zeroth STT server 
+    // connect to zeroth STT server
     [self.zeroth connectZerothSocket];
 }
 
