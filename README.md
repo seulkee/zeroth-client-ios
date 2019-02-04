@@ -2,7 +2,7 @@
 
 **Zeroth** was initially developed as part of Atlas’s **Conversational AI platform**, which enables enterprises to add analysis and intelligence to their conversational data. Visit our [homepage](https://zeroth-cloud.goodatlas.com/) for more information.
 
-We now introduce Zeroth Cloud as a hosted service for any developer to incorporate speech-to-text into his or her service*.*
+We now introduce Zeroth Cloud as a hosted service for any developer to incorporate speech-to-text into his or her service.
 
 We'd love to hear from you! Please email us at [`support@goodatlas.com`](mailto:support@goodatlas.com) with any questions, suggestions or requests.
 
@@ -30,11 +30,17 @@ First thing is to import the header file. See the Installation instructions on h
 #import "ZerothSpeechToText.h"
 ```
 
-Once imported, you can create a connection to zeroth WebSocket server with your authentication info. Set  the delegate as well.
+Once imported, you can create a connection to zeroth WebSocket server with your authentication info. Set  the delegate as well. Optionally, sample rate and buffer size can be configured. The default sample rate is 16Khz and send default buffer chunk in every 250ms. 
 
 ```objc
 self.zeroth = [ZerothSpeechToText new];
 self.zeroth.delegate = self;
+
+// setup sample rate (optional) - default 16 KHz
+[self.zeroth setupSampleRate:z16000];
+
+// setup buffer size in second (optional) - default 250 ms
+[self.zeroth setupBufferSizeInSecond:0.25];
 
 // setup authentication
 [self.zeroth setupAuthenticationAppID:@"ENTER_YOUR_APP_ID"
