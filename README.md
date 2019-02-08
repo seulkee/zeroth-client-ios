@@ -124,7 +124,7 @@ Check out the project to see how to setup a connection to Zeroth server and stre
 - The recommended approach for installing Zeroth is via the CocoaPods package manager (like most libraries). Create empty `Podfile` or use command `pod init` to generate default `Podfile` Then add following pod info.
 
   ```
-  pod 'zeroth'
+  pod 'zeroth-private'
   pod 'jetfire', :inhibit_warnings => true
   ```
 
