@@ -8,11 +8,14 @@
 
 #define USE_AUDIOENGINE 0
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
 #import "ZerothSpeechToText.h"
 #import "JFRWebSocket.h"
 #import "AudioEngineHandler.h"
 #import "AudioQueueHandler.h"
 #import <AVFoundation/AVFoundation.h>
+#pragma clang diagnostic pop
 
 @interface ZerothSpeechToText ()<NSURLSessionDelegate, JFRWebSocketDelegate, AudioEngineHandlerDelegate, AudioQueueHandlerDelegate> {
     

@@ -5,7 +5,7 @@
 //  Created by Bryan S. Kim
 //  Copyright © 2019 Atlas Guide. All rights reserved.
 //
- 
+
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, ZSampleRate) {
@@ -34,10 +34,10 @@ typedef NS_ENUM(NSInteger, zLanguage) {
 @property (readonly, nonatomic, getter=isListening) BOOL listening;
 @property (readonly, nonatomic, getter=isConnected) BOOL connected;
 
-@property (nonatomic, weak) id<ZerothSTTDelegate> delegate;
+@property (nonatomic, weak) id<ZerothSTTDelegate> _Nullable delegate;
 
 // Check list
-// "Privacy - Microphone Usage Description" need to added in app plist 
+// "Privacy - Microphone Usage Description" need to added in app plist
 // <key>NSMicrophoneUsageDescription</key>
 // <string>The app needs microphone input to perform. </string>
 
@@ -51,8 +51,8 @@ typedef NS_ENUM(NSInteger, zLanguage) {
 
 - (void)setupSampleRate:(ZSampleRate)sampleRate;
 - (void)setupBufferSizeInSecond:(double)bufferSizeInSec;
-- (void)setupAuthenticationAppID:(NSString *)appID
-                       AppSecret:(NSString *)appSecret
+- (void)setupAuthenticationAppID:(NSString *_Nullable)appID
+                       AppSecret:(NSString *_Nullable)appSecret
                         Language:(zLanguage)language
                        FinalOnly:(BOOL)isFinalOnly;
 - (void)connectZerothSocket;
